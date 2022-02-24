@@ -45,7 +45,8 @@ assets:
   - assets/lottie/lf30_editor_naboxmse.json
   - assets/images/none_default.png
   - assets/lottie/wave.json
-  #   - images/a_dot_ham.jpeg
+  - assets/images/img_1.png
+  #  - images/a_dot_ham.jpeg
 
 # shriftlarni shu yerga qo'sh
   # fonts:

@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:lottie/lottie.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:test_pin/models/pinterest_model.dart';
 import 'package:test_pin/models/utils.dart';
@@ -69,13 +69,18 @@ class _HomePageState extends State<HomePage>
 
 
   static List<Tab> _tabs = [
+
     Tab(
       height: 40,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Text(
-          'All',
-          style: TextStyle(fontSize: 14),
+      child: Container(
+        width: 80,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
+            'All',
+            style: TextStyle(fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     ),
@@ -83,44 +88,37 @@ class _HomePageState extends State<HomePage>
       height: 40,
       child: SizedBox(
 
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 1),
-          child: Text(
-            'UX/UI',
-            style: TextStyle(fontSize: 14),
-            overflow: 'UX'.length >= 10
-                ? TextOverflow.ellipsis
-                : TextOverflow.clip,
+        child: Container(
+          width: 80,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 1),
+            child: Text(
+              'UX/UI',
+              style: TextStyle(fontSize: 14),
+              overflow: 'UX'.length >= 10
+                  ? TextOverflow.ellipsis
+                  : TextOverflow.clip,
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ),
     ),
     Tab(
       height: 40,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        child: Text(
-          'UI',
-          style: TextStyle(fontSize: 14),
-        ),
-      ),
-    ),
-    /*Tab(
-      height: 40,
-      child: SizedBox(
-
+      child: Container(
+        width: 80,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 1),
+          padding: EdgeInsets.symmetric(horizontal: 5),
           child: Text(
-            'Urban',
+            'Modern',
             style: TextStyle(fontSize: 14),
-            overflow: 'Modern'.length >= 10
-                ? TextOverflow.ellipsis
-                : TextOverflow.clip,
+            textAlign: TextAlign.center,
           ),
         ),
       ),
-    ),*/
+    ),
+
   ];
 
   @override
@@ -198,7 +196,7 @@ class _HomePageState extends State<HomePage>
       );
       final result = await ImageGallerySaver.saveImage(Uint8List.fromList(response.data),
           quality: 80,
-        name: "hello"
+        name: DateTime.now().toString()
       );
       print(result);
 
@@ -238,7 +236,9 @@ class _HomePageState extends State<HomePage>
 
         // tabbarni boshqarish uchun controller funksiya
         controller: _tabController,
+
         children: [
+
           isLoading
               ? Center(
             child: SizedBox(
@@ -282,24 +282,24 @@ class _HomePageState extends State<HomePage>
                           },
                           child: Column(
                             children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    child: CachedNetworkImage(
-                                      imageUrl: note[index].urls!.small!,
-                                      placeholder: (context, widget) => AspectRatio(
-                                        aspectRatio: note[index].width!/note[index].height!,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(15.0),
-                                            color: UtilsColors(value: note[index].color!).toColor(),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      child: CachedNetworkImage(
+                                        imageUrl: note[index].urls!.small!,
+                                        placeholder: (context, widget) => AspectRatio(
+                                          aspectRatio: note[index].width!/note[index].height!,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(15.0),
+                                              color: UtilsColors(value: note[index].color!).toColor(),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    )
+                                      )
+                                  ),
                                 ),
-                              ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
                                 child: Row(

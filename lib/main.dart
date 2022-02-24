@@ -3,6 +3,7 @@ import 'package:test_pin/pages/account_page.dart';
 import 'package:test_pin/pages/header_page.dart';
 import 'package:test_pin/pages/home_page.dart';
 import 'package:test_pin/pages/search_page.dart';
+import 'package:test_pin/pages/temp_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,12 +23,13 @@ class MyApp extends StatelessWidget {
       ),
 
 
-      home: HeaderPage(),
+      home: SearchPhotoTest(),
       routes: {
         HomePage.id: (context) => const HomePage(),
         SearchPage.id: (context) => const SearchPage(),
         AccountPage.id: (context) => const AccountPage(),
         HeaderPage.id:(context)=>HeaderPage(),
+        SearchPhotoTest.id:(context)=>SearchPhotoTest(),
       },
     );
   }

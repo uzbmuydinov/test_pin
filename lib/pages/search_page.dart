@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:test_pin/models/pinterest_model.dart';
+import 'package:test_pin/services/http_service.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -18,6 +21,41 @@ class _SearchPageState extends State<SearchPage> {
     "https://i.pinimg.com/736x/78/c9/72/78c9726986bfc9b1714c534da7ce7f82.jpg",
   ];
 
+  List<Post> note = [];
+  bool isLoading = true;
+  bool isLoadMore = false;
+
+  void _showResponse(String response) {
+    List<Post> list = HttpService.parseResponse(response);
+    setState(() {
+      note = list;
+      isLoading = false;
+    });
+  }
+
+  void apiGet() {
+    HttpService.GET(HttpService.API_TODO_LIST, HttpService.paramEmpty())
+        .then((value) {
+      if (value != null) {
+        // tekshirish uchun. faqat debug modeda ishlaydi
+        if (kDebugMode) {}
+        _showResponse(value);
+      }
+    });
+  }
+  late int _page = 1;
+  Future<void> _loadMore() async {
+    String? response = await HttpService.GET(
+        HttpService.API_TODO_LIST, HttpService.paramsPage(_page + 1, 10));
+    List<Post> list = HttpService.parseResponse(response!);
+    setState(() {
+      //UtilsColors(value: note[1].color!).toColor();
+
+      note.addAll(list);
+      isLoadMore = false;
+      _page += 1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,15 +123,17 @@ class _SearchPageState extends State<SearchPage> {
             const SizedBox(
               height: 15,
             ),
+
+
             Container(
               alignment: Alignment.bottomCenter,
               margin: const EdgeInsets.symmetric(horizontal: 7),
               height: MediaQuery.of(context).size.height / 3,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(25.0),
                   image: const DecorationImage(
-                      image: NetworkImage("https://headhouse.ru/style/img/default.jpg"),
+                      image: NetworkImage("https://catherineasquithgallery.com/uploads/posts/2021-02/1612336129_104-p-fon-rabochego-stola-shokolad-209.jpg"),
                       fit: BoxFit.cover
                   )
               ),
@@ -207,7 +247,7 @@ class _SearchPageState extends State<SearchPage> {
                 borderRadius: BorderRadius.circular(15.0),
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
-                  imageUrl: "https://headhouse.ru/style/img/default.jpg",
+                  imageUrl: "https://yobte.ru/uploads/posts/2019-11/kosmos-76-foto-11.jpg",
                   placeholder:(context, index) => Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),

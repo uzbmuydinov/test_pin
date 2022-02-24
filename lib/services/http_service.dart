@@ -18,6 +18,7 @@ class HttpService {
   // Apis
   static String API_TODO_LIST = "/photos";
   static String API_TODO_ONE = "/photos"; // {ID}
+  static String API_TODO_SEARCH = "/search/photos";
 
   // Methods
   static Future<String?> GET(String api, Map<String, String> params) async {
@@ -31,6 +32,14 @@ class HttpService {
       return response.body;
     }
     return null;
+  }
+  static Map<String, String> paramsSearch(int pageNumber,String query) {
+    Map<String, String> params = {};
+    params.addAll({
+      "page":pageNumber.toString(),
+      "query":query.toString()
+    });
+    return params;
   }
 
   static Map<String, String> paramsPage(int pageNumber, int number) {
@@ -61,4 +70,6 @@ class HttpService {
     List<Post> photos = List<Post>.from(json["results"].map((x) => Post.fromJson(x)));
     return photos;
   }
+
+
 }
