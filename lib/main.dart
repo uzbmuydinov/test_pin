@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
 
 
-      home: SearchPhotoTest(),
+      home: HeaderPage(),
       routes: {
         HomePage.id: (context) => const HomePage(),
         SearchPage.id: (context) => const SearchPage(),

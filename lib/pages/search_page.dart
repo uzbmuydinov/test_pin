@@ -20,28 +20,45 @@ class _SearchPageState extends State<SearchPage> {
     "https://i.pinimg.com/originals/82/ba/bf/82babf9b64bf993809e1aac8c7e7d376.jpg",
     "https://i.pinimg.com/736x/78/c9/72/78c9726986bfc9b1714c534da7ce7f82.jpg",
   ];
-
+  late final ScrollController _scrollController = ScrollController();
+  TextEditingController textEditingController = TextEditingController();
+  int pageNumber = 1;
   List<Post> note = [];
   bool isLoading = true;
   bool isLoadMore = false;
 
-  void _showResponse(String response) {
-    List<Post> list = HttpService.parseResponse(response);
+  void _searchImage() async {
+    String image = textEditingController.text.trim().toString();
+    dynamic response = await HttpService.GET(HttpService.API_TODO_SEARCH, HttpService.paramsSearch(pageNumber, image));
+    List<Post> newPosts = HttpService.parseSearchParse(response);
     setState(() {
-      note = list;
+      note.addAll(newPosts);
+      isLoadMore = false;
+      pageNumber += 1;
       isLoading = false;
     });
   }
 
-  void apiGet() {
-    HttpService.GET(HttpService.API_TODO_LIST, HttpService.paramEmpty())
-        .then((value) {
-      if (value != null) {
-        // tekshirish uchun. faqat debug modeda ishlaydi
-        if (kDebugMode) {}
-        _showResponse(value);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _searchImage();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        setState(() {
+          isLoadMore = true;
+        });
+        _searchImage();
       }
     });
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.dispose();
   }
   late int _page = 1;
   Future<void> _loadMore() async {
@@ -73,8 +90,13 @@ class _SearchPageState extends State<SearchPage> {
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(20.0),
             ),
-            child: const TextField(
-              decoration: InputDecoration(
+            child: TextField(
+              controller: textEditingController,
+              onEditingComplete: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                _searchImage();
+              },
+              decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Search for ideas',
                   prefixIcon: Icon(Icons.search, color: Colors.black,),
